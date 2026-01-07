@@ -1,59 +1,36 @@
 import pandas as pd
-import numpy as np
+from sklearn.preprocessing import StandardScaler
+# Charger le fichier Excel
+df = pd.read_excel("data_tp3.xlsx")
+# Afficher les 5 premières lignes
+print(df.head())
+
+# Nombre de lignes et colonnes
+print(df.shape)
+
+# Noms des colonnes
+print(df.columns)
+
+# Types des données
+print(df.dtypes)
+df_numeric = df.select_dtypes(include=['int64', 'float64'])
+
+print(df_numeric.head())
 
 
-file_path = "data_tp3.xlsx"   
-X_df = pd.read_excel(file_path)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df_numeric)
 
-print("Matrice X :")
-print(X_df)
-print()
+print(X_scaled)
 
+# Moyenne des variables
+moyenne = df_numeric.mean()
 
-X = X_df.values
-n, p = X.shape
+# Écart-type des variables
+ecart_type = df_numeric.std(ddof=0)  # ddof=0 pour ACP
 
+print("Moyenne :")
+print(moyenne)
 
-mean = np.mean(X, axis=0)
-std = np.std(X, axis=0, ddof=1)  
-
-print("Moyenne des variables :")
-print(mean)
-print()
-
-print("Écart-type des variables :")
-print(std)
-print()
-
-
-X_cr = (X - mean) / std
-
-print("Matrice centrée réduite :")
-print(X_cr)
-print()
-
-
-R = np.corrcoef(X, rowvar=False)
-
-print("Matrice de corrélation :")
-print(R)
-print()
-
-
-coeffs = np.poly(R)
-
-print("Polynôme caractéristique :")
-print(coeffs)
-print()
-
-
-valeurs_propres, vecteurs_propres = np.linalg.eig(R)
-
-print("Valeurs propres :")
-print(valeurs_propres)
-print()
-
-
-print("Vecteurs propres (colonnes) :")
-print(vecteurs_propres)
-print()
+print("\nÉcart-type :")
+print(ecart_type)
